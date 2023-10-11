@@ -16,9 +16,7 @@ const Formulary = () => {
 
   const handleOnSubmit = (data: unknown) => {
     customAxios
-      .post("/api/test/store", {
-        data,
-      })
+      .post("/api/test/store", data)
       .then((res) => setResult(res.data))
       .catch((err) => setError(err.response.data));
   };
