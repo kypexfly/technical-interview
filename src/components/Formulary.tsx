@@ -1,11 +1,10 @@
-import axios, { AxiosError } from "axios";
-import { Formik, Field, Form, ErrorMessage } from "formik";
 import { formSchema } from "../utils/validators";
+import { customAxios } from "../utils/customAxios";
+
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useState } from "react";
 
 import styles from "./Formulary.module.css";
-
-const API_URL = "https://colegios.delmartg.com:8080/api/test/store";
 
 const FormGroup = ({ children }: { children: React.ReactNode }) => {
   return <div style={{ marginBottom: "1rem" }}>{children}</div>;
@@ -16,33 +15,12 @@ const Formulary = () => {
   const [error, setError] = useState<unknown>();
 
   const handleOnSubmit = (data: unknown) => {
-    axios({
-      method: "POST",
-      url: API_URL,
-      data: data,
-    })
-      .then((res) => {
-        setResult(res.data);
+    customAxios
+      .post("/api/test/store", {
+        data,
       })
-      .catch((err) => {
-        // Si es instancia de Axios error,
-        // se puede extraer el status y
-        // emitir un error específico
-
-        // pd: no funciona, no alcancé a investigar esto
-        if (err instanceof AxiosError) {
-          if (err.response?.status === 422) {
-            setError({
-              error422: err.response.data,
-            });
-          }
-        }
-
-        // Error generico en cualquier caso de que no sea un 422
-        setError({
-          genericError: err,
-        });
-      });
+      .then((res) => setResult(res.data))
+      .catch((err) => setError(err.response.data));
   };
 
   return (
@@ -52,7 +30,7 @@ const Formulary = () => {
           nombre: "",
           email: "",
           password: "",
-          confirmar: false,
+          confirmar: "",
           apellido: "",
           esSuperAdmin: false,
           telefono: "",
