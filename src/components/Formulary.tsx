@@ -28,6 +28,8 @@ const Formulary = () => {
         // Si es instancia de Axios error,
         // se puede extraer el status y
         // emitir un error específico
+
+        // pd: no funciona, no alcancé a investigar esto
         if (err instanceof AxiosError) {
           if (err.response?.status === 422) {
             setError({
@@ -80,7 +82,7 @@ const Formulary = () => {
 
           <FormGroup>
             <label>Confirmar</label>
-            <Field name="confirmar" placeholder="" type="checkbox" />
+            <Field name="confirmar" placeholder="" type="password" />
             <ErrorMessage name="confirmar" component="div" className={styles.error} />
           </FormGroup>
 
